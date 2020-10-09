@@ -1,37 +1,50 @@
 #ifndef CHIP8_H
 #define CHIP8_H
 
-#include "mem.h"
 #include <inttypes.h>
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 
-#define MEM_SIZE 0xFFF
-#define PROG_BEGIN 0x200
+#include "mem.h"
 
-#define SCREEN_SIZE 64 * 32
+#define NUM_REGS  16
+#define CARRY_REG 0xF
 
-struct chip8_s {
-	byte mem[MEM_SIZE];
+#define MEM_SIZE	  0x1000
+#define FONTSET_START 0x50
+#define PROG_BEGIN	  0x200
 
-	bool screen[SCREEN_SIZE];
+#define STACK_SIZE 16
 
-	byte Vx;
-	byte Vy;
-	byte VF;
-	int16_t I;
+/* 5 bytes * 16 chars */
+#define FONTSET_SIZE  5 * 16
+#define SCREEN_WIDTH  64
+#define SCREEN_HEIGHT 32
+#define SCREEN_SIZE	  SCREEN_WIDTH* SCREEN_HEIGHT
 
-	int16_t pc;
-	byte sp;
+extern const u8 FONTSET[FONTSET_SIZE];
 
-	int16_t stack[16];
+typedef struct chip8 {
+	u16 i;
+	u16 pc;
+	u16 op;
+	u8	sp;
 
-	byte sound;
-	byte delay;
-};
-typedef struct chip8_s chip8_t;
+	u8 v[NUM_REGS];
 
-extern void chip8_reset(chip8_t* c);
-extern void chip8_load(chip8_t* c, byte* rom, size_t rom_size);
+	u8	mem[MEM_SIZE];
+	u16 stack[STACK_SIZE];
+
+	u8 sound;
+	u8 delay;
+
+	u32	 screen[SCREEN_SIZE];
+	bool draw;
+} chip8_t;
+
+extern void chip8_init(chip8_t* c);
+extern void chip8_load(chip8_t* c, const char* filename);
+
+extern void chip8_emulate_cycle(chip8_t* c);
 
 #endif

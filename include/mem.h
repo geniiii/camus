@@ -1,9 +1,10 @@
 #ifndef MEM_H
 #define MEM_H
 
+#include "types.h"
+
 /* for memset, etc */
 #include <stdio.h>
-
-typedef unsigned char byte;
+#include <string.h>
 
 #endif

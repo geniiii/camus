@@ -7,3 +7,9 @@ BinPackParameters: true
 AllowAllParametersOfDeclarationOnNextLine: true
 CommentPragmas: '.\/[\*(\/\/)]+(.+\n.+)+\*\/'
 ColumnLimit: 0
+AlignConsecutiveDeclarations: true
+AlignConsecutiveAssignments: true
+AlignConsecutiveMacros: true
+AllowShortFunctionsOnASingleLine: true
+AllowShortCaseLabelsOnASingleLine: true
+SpaceAfterCStyleCast: true
