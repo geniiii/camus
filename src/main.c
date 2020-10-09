@@ -11,13 +11,13 @@ int main(int argc, char** argv) {
 	chip8_load(&c, argv[1]);
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		puts("Failed to init SDL");
+		fputs("Failed to init SDL", stderr);
 		return 1;
 	}
 
 	SDL_Window* window = SDL_CreateWindow("camus", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH * 12, SCREEN_HEIGHT * 12, SDL_WINDOW_SHOWN);
 	if (!window) {
-		puts("Failed to create window");
+		fputs("Failed to create window", stderr);
 		return 1;
 	}
 
