@@ -6,6 +6,7 @@
 #include <stddef.h>
 
 #include "mem.h"
+#include "opcode.h"
 
 #define NUM_REGS  16
 #define CARRY_REG 0xF
@@ -25,10 +26,10 @@
 extern const u8 FONTSET[FONTSET_SIZE];
 
 typedef struct chip8 {
-	u16 i;
-	u16 pc;
-	u16 op;
-	u8	sp;
+	u16			   i;
+	u16			   pc;
+	chip8_opcode_t op;
+	u8			   sp;
 
 	u8 v[NUM_REGS];
 

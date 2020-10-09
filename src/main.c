@@ -8,7 +8,7 @@ int main(int argc, char** argv) {
 	chip8_t c;
 	chip8_init(&c);
 
-	chip8_load(&c, argv[2]);
+	chip8_load(&c, argv[1]);
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		puts("Failed to init SDL");

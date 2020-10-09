@@ -1,7 +1,7 @@
 #ifndef OPTABLE_H
 #define OPTABLE_H
 
-#include "opcode.h"
+#include "opcodes.h"
 
 #define OP(op) extern void chip8_op_##op(chip8_t* c);
 

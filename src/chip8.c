@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 
-#include "opcode.h"
+#include "opcodes.h"
 #include "optable.h"
 
 #define OP(op) chip8_op_##op
@@ -61,6 +61,6 @@ void chip8_emulate_cycle(chip8_t* c) {
 		OP(cxnn), OP(dxyn), OP(exxx), OP(fxxx)};
 	chip8_op_fetch(c);
 
-	chip8_op_ptr op = op_ltable[(c->op & 0xF000) >> 12];
+	chip8_op_ptr op = op_ltable[c->op.op];
 	op(c);
 }

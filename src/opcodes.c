@@ -1,4 +1,4 @@
-#include "opcode.h"
+#include "opcodes.h"
 
 #include <math.h>
 #include <stdlib.h>
@@ -10,19 +10,19 @@
 #define WHITE 0xFFFFFFFF
 #define BLACK 0xFF000000
 
-#define X	(c->op >> 8 & 0xF)
-#define Y	(c->op >> 4 & 0xF)
+#define X	(c->op.x)
+#define Y	(c->op.y)
 #define Vx	(c->v[X])
 #define Vy	(c->v[Y])
 #define Vf	(c->v[CARRY_REG])
-#define N	(c->op & 0xF)
-#define NN	(c->op & 0xFF)
-#define NNN (c->op & 0xFFF)
+#define N	(c->op.n)
+#define NN	(c->op.nn)
+#define NNN (c->op.nnn)
 #define PC	(c->pc)
 #define I	(c->i)
 
 void chip8_op_fetch(chip8_t* c) {
-	c->op = c->mem[PC] << 8 | c->mem[PC + 1];
+	c->op.opcode = c->mem[PC] << 8 | c->mem[PC + 1];
 }
 
 OP(00e0) {
