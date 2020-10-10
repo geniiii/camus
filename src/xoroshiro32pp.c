@@ -4,7 +4,7 @@ static inline u16 rotl(const u16 x, u16 k) {
 	return (x << k) | (x >> ((sizeof x * 8) - k));
 }
 
-static u16 s[2];
+static u16 s[2] = {0, 1};
 
 u16 xs32pp_next(void) {
 	const u16 s0	 = s[0];
