@@ -1,14 +1,33 @@
 #include "opcodes.h"
 
+#include <SDL2/SDL_keyboard.h>
 #include <math.h>
 #include <stdlib.h>
 
 #include "xoroshiro32pp.h"
 
-#define OP(op) void chip8_op_##op(chip8_t* c)
+#define KEY(key) SDL_SCANCODE_##key
 
-#define WHITE 0xFFFFFFFF
-#define BLACK 0xFF000000
+const SDL_Scancode KEY_MAP[16] = {
+	KEY(1), /* 0 */
+	KEY(2), /* 1 */
+	KEY(3), /* 2 */
+	KEY(4), /* 3 */
+	KEY(Q), /* 4 */
+	KEY(W), /* 5 */
+	KEY(E), /* 6 */
+	KEY(R), /* 7 */
+	KEY(A), /* 8 */
+	KEY(S), /* 9 */
+	KEY(D), /* A */
+	KEY(F), /* B */
+	KEY(Z), /* C */
+	KEY(X), /* D */
+	KEY(C), /* E */
+	KEY(V)	/* F */
+};
+
+#define OP(op) void chip8_op_##op(chip8_t* c)
 
 #define X	(c->op.x)
 #define Y	(c->op.y)
@@ -26,7 +45,7 @@ void chip8_op_fetch(chip8_t* c) {
 }
 
 OP(00e0) {
-	memset(c->screen, 0, sizeof c->screen);
+	chip8_screen_clear(&c->screen);
 	PC += 2;
 } /* CLS - Clear display */
 OP(00ee) {
@@ -77,7 +96,7 @@ OP(8xy4) {
 	PC += 2;
 } /* ADD  Vx, Vy - Vx +=  Vy, set Vf to 1 on carry */
 OP(8xy5) {
-	Vf = Vx > Vy;
+	Vf = (bool) (Vx >= Vy);
 	Vx -= Vy;
 
 	PC += 2;
@@ -89,7 +108,7 @@ OP(8xy6) {
 	PC += 2;
 } /* SHR  Vx, Vy - Vx >>= Vy, set Vf to old least significant bit */
 OP(8xy7) {
-	Vf = Vy > Vx;
+	Vf = Vy >= Vx;
 	Vx = Vy - Vx;
 
 	PC += 2;
@@ -108,8 +127,8 @@ OP(annn) {
 OP(bnnn) { PC = NNN + c->v[0]; } /* JP nnn + V[0] - Jump to nnn + V[0] */
 
 OP(cxnn) {
-	const u16 rnd = xs32pp_next() % 8;
-	Vx			  = rnd & NN;
+	const u8 rnd = xs32pp_next() % 8;
+	Vx			 = rnd & NN;
 
 	PC += 2;
 } /* RND Vx, nn - Vx = random & nn */
@@ -117,42 +136,48 @@ OP(cxnn) {
 OP(dxyn) {
 	Vf = 0;
 
+	u32* pixels = NULL;
+	int	 pitch;
+	SDL_LockTexture(c->screen.texture, NULL, (void**) &pixels, &pitch);
+
 	for (u8 y = 0; y < N; ++y) {
 		u8 pixel = c->mem[I + y];
 		for (u8 x = 0; x < 8; ++x) {
-			if ((pixel & (0x80 >> x))) {
+			if (pixel & (0x80 >> x)) {
 				u32 pos = (Vx + x) % SCREEN_WIDTH +
 						  ((Vy + y) % SCREEN_HEIGHT) * SCREEN_WIDTH;
-				if (c->screen[pos] == WHITE) {
-					c->screen[pos] = BLACK;
-					Vf			   = 1;
+				if (pixels[pos] == ON_COLOR) {
+					pixels[pos] = OFF_COLOR;
+					Vf			= 1;
 				} else {
-					c->screen[pos] = WHITE;
+					pixels[pos] = ON_COLOR;
 				}
-				c->draw = true;
+				c->screen.draw = true;
 			}
 		}
 	}
 
+	SDL_UnlockTexture(c->screen.texture);
+
 	PC += 2;
 } /* DRW Vx, Vy, N - Display n-byte sprite starting at memory location I at Vx[y], set V[F] to 1 on collision */
 
-OP(ex9e) {
-	// TODO: Input
-	PC += 2;
-} /* SKP  Vx - Skip next opcode if key Vx is pressed */
-OP(exa1) {
-	// TODO: Input
-	PC += 2;
-} /* SKNP Vx - Skip next opcode if key Vx is not pressed */
+OP(ex9e) { PC += SDL_GetKeyboardState(NULL)[KEY_MAP[X]] ? 4 : 2; }	/* SKP  Vx - Skip next opcode if key Vx is pressed */
+OP(exa1) { PC += !SDL_GetKeyboardState(NULL)[KEY_MAP[X]] ? 4 : 2; } /* SKNP Vx - Skip next opcode if key Vx is not pressed */
 
 OP(fx07) {
 	Vx = c->delay;
 	PC += 2;
 } /* LD Vx, DT - Vx = delay timer */
 OP(fx0a) {
-	// TODO: Input
-	PC += 2;
+	/* We don't increase the program counter until a key is pressed, meaning we loop the same opcode */
+	for (u8 i = 0; i < NUM_KEYS; ++i) {
+		if (SDL_GetKeyboardState(NULL)[KEY_MAP[i]]) {
+			Vx = i;
+			PC += 2;
+			return;
+		}
+	}
 } /* LD Vx, K - Wait for key press, Vx = K */
 OP(fx15) {
 	c->delay = Vx;
@@ -167,7 +192,7 @@ OP(fx1e) {
 	PC += 2;
 } /* ADD I, Vx - I += Vx */
 OP(fx29) {
-	I = FONTSET[X];
+	I = Vx * 5;
 	PC += 2;
 } /* LD F, Vx - I = fontset[x] */
 OP(fx33) {

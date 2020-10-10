@@ -32,7 +32,9 @@ void chip8_init(chip8_t* c) {
 	c->pc = PROG_BEGIN;
 
 	/* Copy fontset */
-	memcpy(&c->mem[FONTSET_START], FONTSET, sizeof FONTSET);
+	memcpy(c->mem, FONTSET, sizeof FONTSET);
+
+	chip8_screen_init(&c->screen);
 }
 
 void chip8_load(chip8_t* c, const char* fname) {

@@ -4,47 +4,38 @@
 
 #include "chip8.h"
 
+#define SPEED		(1000 / 500)
+#define TIMER_SPEED (1000 / 60)
+
 int main(int argc, char** argv) {
 	chip8_t c;
 	chip8_init(&c);
 
 	chip8_load(&c, argv[1]);
 
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		fputs("Failed to init SDL", stderr);
-		return 1;
-	}
-
-	SDL_Window* window = SDL_CreateWindow("camus", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH * 12, SCREEN_HEIGHT * 12, SDL_WINDOW_SHOWN);
-	if (!window) {
-		fputs("Failed to create window", stderr);
-		return 1;
-	}
-
-	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	SDL_Texture*  texture  = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-											   SDL_TEXTUREACCESS_STATIC, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-	uint32_t  start_tick;
-	uint32_t  frame_speed;
+	u32		  start_tick;
+	u32		  frame_speed;
 	SDL_Event event;
 	bool	  running = true;
 	while (running) {
 		start_tick = SDL_GetTicks();
 
 		chip8_emulate_cycle(&c);
-		if (c.draw) {
-			SDL_UpdateTexture(texture, NULL, c.screen,
-							  SCREEN_WIDTH * sizeof(u32));
-			SDL_RenderCopy(renderer, texture, NULL, NULL);
-			SDL_RenderPresent(renderer);
-
-			c.draw = false;
+		if (c.screen.draw) {
+			chip8_screen_draw(&c.screen);
+			c.screen.draw = false;
 		}
 
 		frame_speed = SDL_GetTicks() - start_tick;
-		if (frame_speed < 1000 / 60) {
-			SDL_Delay(1000 / 60 - frame_speed);
+		if (frame_speed < SPEED) {
+			SDL_Delay(SPEED - frame_speed);
+		}
+
+		if (c.delay && frame_speed < TIMER_SPEED) {
+			c.delay--;
+		}
+		if (c.sound && frame_speed < TIMER_SPEED) {
+			c.sound--;
 		}
 
 		while (SDL_PollEvent(&event)) {
@@ -54,9 +45,7 @@ int main(int argc, char** argv) {
 		}
 	}
 
-	SDL_DestroyRenderer(renderer);
-	renderer = NULL;
-	SDL_DestroyWindow(window);
-	window = NULL;
+	chip8_screen_destroy(&c.screen);
+
 	SDL_Quit();
 }

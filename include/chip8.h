@@ -2,13 +2,14 @@
 #define CHIP8_H
 
 #include <inttypes.h>
-#include <stdbool.h>
 #include <stddef.h>
 
 #include "mem.h"
 #include "opcode.h"
+#include "screen.h"
 
 #define NUM_REGS  16
+#define NUM_KEYS  16
 #define CARRY_REG 0xF
 
 #define MEM_SIZE	  0x1000
@@ -18,10 +19,7 @@
 #define STACK_SIZE 16
 
 /* 5 bytes * 16 chars */
-#define FONTSET_SIZE  5 * 16
-#define SCREEN_WIDTH  64
-#define SCREEN_HEIGHT 32
-#define SCREEN_SIZE	  SCREEN_WIDTH* SCREEN_HEIGHT
+#define FONTSET_SIZE 5 * 16
 
 extern const u8 FONTSET[FONTSET_SIZE];
 
@@ -39,8 +37,7 @@ typedef struct chip8 {
 	u8 sound;
 	u8 delay;
 
-	u32	 screen[SCREEN_SIZE];
-	bool draw;
+	chip8_screen_t screen;
 } chip8_t;
 
 extern void chip8_init(chip8_t* c);
