@@ -27,27 +27,27 @@ const u8 FONTSET[FONTSET_SIZE] = {
 	0xF0, 0x80, 0xF0, 0x80, 0x80   // F
 };
 
-void chip8_init(chip8_t* c) {
+u8 chip8_init(chip8_t* c) {
 	memset(c, 0, sizeof(chip8_t));
 	c->pc = PROG_BEGIN;
 
 	/* Copy fontset */
-	memcpy(c->mem, FONTSET, sizeof FONTSET);
+	memcpy(&c->mem[FONTSET_START], FONTSET, sizeof FONTSET);
 
-	chip8_screen_init(&c->screen);
+	return chip8_screen_init(&c->screen);
 }
 
-void chip8_load(chip8_t* c, const char* fname) {
+u8 chip8_load(chip8_t* c, const char* fname) {
 	FILE* fp = fopen(fname, "rb");
 	if (!fp) {
 		fputs("Failed to open file", stderr);
-		abort();
+		return 1;
 	}
 	fseek(fp, 0, SEEK_END);
 	size_t fsize = ftell(fp);
 	if (fsize > MEM_SIZE - PROG_BEGIN) {
 		fputs("File too large", stderr);
-		abort();
+		return 1;
 	}
 	rewind(fp);
 

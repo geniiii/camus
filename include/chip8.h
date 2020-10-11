@@ -10,7 +10,7 @@
 #define CARRY_REG 0xF
 
 #define MEM_SIZE	  0x1000
-#define FONTSET_START 0x50
+#define FONTSET_START 0x0
 #define PROG_BEGIN	  0x200
 
 #define STACK_SIZE 16
@@ -37,8 +37,8 @@ typedef struct chip8 {
 	chip8_screen_t screen;
 } chip8_t;
 
-extern void chip8_init(chip8_t* c);
-extern void chip8_load(chip8_t* c, const char* filename);
+extern u8 chip8_init(chip8_t* c);
+extern u8 chip8_load(chip8_t* c, const char* filename);
 
 extern void chip8_emulate_cycle(chip8_t* c);
 

@@ -4,38 +4,50 @@
 
 #include "chip8.h"
 
-#define SPEED		(1000 / 500)
-#define TIMER_SPEED (1000 / 60)
+#define SPEED	 (1000 / 60)
+#define IPS_MULT 9
 
 int main(int argc, char** argv) {
+	u8 error = 0;
+
 	chip8_t c;
-	chip8_init(&c);
+	if ((error = chip8_init(&c)) > 0) {
+		goto exit;
+	}
+	if ((error = chip8_load(&c, argv[1]) > 0)) {
+		goto exit;
+	}
 
-	chip8_load(&c, argv[1]);
-
-	u32		  start_tick;
-	u32		  frame_speed;
+	u32		  tick;
+	u32		  last_tick	  = 0;
+	u32		  accumulator = 0;
+	u32		  delta;
 	SDL_Event event;
 	bool	  running = true;
 	while (running) {
-		start_tick = SDL_GetTicks();
+		tick	  = SDL_GetTicks();
+		delta	  = tick - last_tick;
+		last_tick = tick;
+		accumulator += delta;
 
-		chip8_emulate_cycle(&c);
-		if (c.screen.draw) {
-			chip8_screen_draw(&c.screen);
-			c.screen.draw = false;
-		}
+		while (accumulator >= SPEED) {
+			/* 540Hz cycle loop */
+			for (u8 cycles = 1; cycles <= IPS_MULT; ++cycles) {
+				chip8_emulate_cycle(&c);
+				if (c.screen.draw) {
+					chip8_screen_draw(&c.screen);
+					c.screen.draw = false;
+				}
+			}
 
-		frame_speed = SDL_GetTicks() - start_tick;
-		if (frame_speed < SPEED) {
-			SDL_Delay(SPEED - frame_speed);
-		}
+			if (c.delay) {
+				c.delay--;
+			}
+			if (c.sound) {
+				c.sound--;
+			}
 
-		if (c.delay && frame_speed < TIMER_SPEED) {
-			c.delay--;
-		}
-		if (c.sound && frame_speed < TIMER_SPEED) {
-			c.sound--;
+			accumulator -= SPEED;
 		}
 
 		while (SDL_PollEvent(&event)) {
@@ -45,7 +57,10 @@ int main(int argc, char** argv) {
 		}
 	}
 
+exit:
 	chip8_screen_destroy(&c.screen);
 
 	SDL_Quit();
+
+	return error;
 }
