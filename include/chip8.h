@@ -1,9 +1,6 @@
 #ifndef CHIP8_H
 #define CHIP8_H
 
-#include <inttypes.h>
-#include <stddef.h>
-
 #include "mem.h"
 #include "opcode.h"
 #include "screen.h"

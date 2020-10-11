@@ -1,8 +1,6 @@
 #include "opcodes.h"
 
 #include <SDL2/SDL_keyboard.h>
-#include <math.h>
-#include <stdlib.h>
 
 #include "xoroshiro32pp.h"
 
