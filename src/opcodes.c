@@ -162,8 +162,8 @@ OP(dxyn) {
 	PC += 2;
 } /* DRW Vx, Vy, N - Display n-byte sprite starting at memory location I at Vx[y], set V[F] to 1 on collision */
 
-OP(ex9e) { PC += SDL_GetKeyboardState(NULL)[KEY_MAP[X]] ? 4 : 2; }	/* SKP  Vx - Skip next opcode if key Vx is pressed */
-OP(exa1) { PC += !SDL_GetKeyboardState(NULL)[KEY_MAP[X]] ? 4 : 2; } /* SKNP Vx - Skip next opcode if key Vx is not pressed */
+OP(ex9e) { PC += SDL_GetKeyboardState(NULL)[KEY_MAP[Vx]] ? 4 : 2; }	 /* SKP  Vx - Skip next opcode if key Vx is pressed */
+OP(exa1) { PC += !SDL_GetKeyboardState(NULL)[KEY_MAP[Vx]] ? 4 : 2; } /* SKNP Vx - Skip next opcode if key Vx is not pressed */
 
 OP(fx07) {
 	Vx = c->delay;
