@@ -5,8 +5,9 @@
 #include "gui.h"
 #include "nuklear/nuklear_sdl_opengl3.h"
 
-#define SPEED	 (1000 / 60)
-#define IPS_MULT 9
+#define TIMER_SPEED 60
+#define SPEED		(1000 / TIMER_SPEED)
+#define IPS_MULT	9
 
 int main(int argc, char** argv) {
 	u8 error = 0;
@@ -20,7 +21,9 @@ int main(int argc, char** argv) {
 	}
 
 	camus_gui_t gui;
-	camus_gui_init(&gui, &c);
+	if ((error = camus_gui_init(&gui, &c)) > 0) {
+		goto exit;
+	}
 
 	u32		  tick;
 	u32		  last_tick	  = 0;

@@ -3,19 +3,6 @@
 #include <chip8/screen.h>
 #include <chip8/chip8.h>
 
-void GLAPIENTRY
-MessageCallback(GLenum		  source,
-				GLenum		  type,
-				GLuint		  id,
-				GLenum		  severity,
-				GLsizei		  length,
-				const GLchar* message,
-				const void*	  userParam) {
-	fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
-			(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
-			type, severity, message);
-}
-
 u8 chip8_screen_init(chip8_screen_t* s) {
 	SDL_SetHint(SDL_HINT_VIDEO_HIGHDPI_DISABLED, "0");
 
@@ -49,9 +36,6 @@ u8 chip8_screen_init(chip8_screen_t* s) {
 	for (u16 i = 0; i < SCREEN_SIZE; ++i) {
 		s->pixels[i] = OFF_COLOR;
 	}
-
-	//glEnable(GL_DEBUG_OUTPUT);
-	//glDebugMessageCallback(MessageCallback, 0);
 
 	glGenTextures(1, &s->texture);
 
