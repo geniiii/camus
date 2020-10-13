@@ -17,11 +17,11 @@ typedef struct camus_gui {
 	bool open;
 } camus_gui_t;
 
-extern u8 camus_gui_init(camus_gui_t* g, chip8_t* c);
+extern void camus_gui_init(camus_gui_t* g, chip8_t* c);
 
-extern u8 camus_gui_update(camus_gui_t* g);
-extern u8 camus_gui_draw(camus_gui_t* g);
+extern void camus_gui_update(camus_gui_t* g);
+extern void camus_gui_draw(camus_gui_t* g);
 
-extern u8 camus_gui_destroy(camus_gui_t* g);
+extern void camus_gui_destroy(camus_gui_t* g);
 
 #endif

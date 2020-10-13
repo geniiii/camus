@@ -21,9 +21,7 @@ int main(int argc, char** argv) {
 	}
 
 	camus_gui_t gui;
-	if ((error = camus_gui_init(&gui, &c)) > 0) {
-		goto exit;
-	}
+	camus_gui_init(&gui, &c);
 
 	u32		  tick;
 	u32		  last_tick	  = 0;
