@@ -107,8 +107,13 @@ void chip8_screen_clear(chip8_screen_t* s) {
 }
 
 void chip8_screen_destroy(chip8_screen_t* s) {
+	glDeleteFramebuffers(1, &s->fbo);
+	s->fbo = 0;
+	glDeleteTextures(1, &s->texture);
+	s->texture = 0;
 	SDL_GL_DeleteContext(s->gl_ctx);
 	s->gl_ctx = NULL;
+
 	SDL_DestroyWindow(s->window);
 	s->window = NULL;
 }

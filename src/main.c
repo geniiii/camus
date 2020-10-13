@@ -11,8 +11,6 @@
 int main(int argc, char** argv) {
 	u8 error = 0;
 
-	camus_gui_t gui;
-
 	chip8_t c;
 	if ((error = chip8_init(&c)) > 0) {
 		goto exit;
@@ -21,7 +19,8 @@ int main(int argc, char** argv) {
 		goto exit;
 	}
 
-	camus_gui_init(&gui, &c.screen);
+	camus_gui_t gui;
+	camus_gui_init(&gui, &c);
 
 	u32		  tick;
 	u32		  last_tick	  = 0;
