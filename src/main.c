@@ -1,14 +1,17 @@
 #define SDL_MAIN_HANDLED
-
 #include <SDL2/SDL.h>
 
-#include "chip8.h"
+#include "chip8/chip8.h"
+#include "gui.h"
+#include "nuklear/nuklear_sdl_opengl3.h"
 
 #define SPEED	 (1000 / 60)
 #define IPS_MULT 9
 
 int main(int argc, char** argv) {
 	u8 error = 0;
+
+	camus_gui_t gui;
 
 	chip8_t c;
 	if ((error = chip8_init(&c)) > 0) {
@@ -17,6 +20,8 @@ int main(int argc, char** argv) {
 	if ((error = chip8_load(&c, argv[1]) > 0)) {
 		goto exit;
 	}
+
+	camus_gui_init(&gui, &c.screen);
 
 	u32		  tick;
 	u32		  last_tick	  = 0;
@@ -31,6 +36,8 @@ int main(int argc, char** argv) {
 		accumulator += delta;
 
 		while (accumulator >= SPEED) {
+			accumulator -= SPEED;
+
 			/* 540Hz cycle loop */
 			for (u8 cycles = 1; cycles <= IPS_MULT; ++cycles) {
 				chip8_emulate_cycle(&c);
@@ -46,18 +53,38 @@ int main(int argc, char** argv) {
 			if (c.sound) {
 				c.sound--;
 			}
-
-			accumulator -= SPEED;
 		}
 
+		nk_input_begin(gui.ctx);
 		while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_QUIT) {
-				running = false;
+			switch (event.type) {
+				case SDL_QUIT: running = false; break;
+				case SDL_KEYUP: {
+					if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
+						gui.open = !gui.open;
+					}
+					break;
+				}
+			}
+
+			if (gui.open) {
+				nk_sdl_handle_event(&event);
 			}
 		}
+		nk_input_end(gui.ctx);
+
+		if (gui.open) {
+			chip8_screen_draw(&c.screen);
+
+			camus_gui_update(&gui);
+			camus_gui_draw(&gui);
+		}
+
+		SDL_GL_SwapWindow(c.screen.window);
 	}
 
 exit:
+	camus_gui_destroy(&gui);
 	chip8_screen_destroy(&c.screen);
 
 	SDL_Quit();

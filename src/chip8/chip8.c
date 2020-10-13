@@ -1,9 +1,8 @@
-#include "chip8.h"
+#include "chip8/chip8.h"
 
 #include <stdlib.h>
 
-#include "opcodes.h"
-#include "optable.h"
+#include "chip8/optable.h"
 
 #define OP(op) chip8_op_##op
 
@@ -29,7 +28,7 @@ const u8 FONTSET[FONTSET_SIZE] = {
 
 u8 chip8_init(chip8_t* c) {
 	memset(c, 0, sizeof(chip8_t));
-	c->pc = PROG_BEGIN;
+	c->cpu.pc = PROG_BEGIN;
 
 	/* Copy fontset */
 	memcpy(&c->mem[FONTSET_START], FONTSET, sizeof FONTSET);
@@ -63,6 +62,6 @@ void chip8_emulate_cycle(chip8_t* c) {
 		OP(cxnn), OP(dxyn), OP(exxx), OP(fxxx)};
 	chip8_op_fetch(c);
 
-	chip8_op_ptr op = op_ltable[c->op.op];
+	chip8_op_ptr op = op_ltable[c->cpu.op.op];
 	op(c);
 }

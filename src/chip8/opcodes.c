@@ -1,8 +1,9 @@
-#include "opcodes.h"
+#include <chip8/opcodes.h>
 
 #include <SDL2/SDL_keyboard.h>
+#include <SDL2/SDL_opengl.h>
 
-#include "xoroshiro32pp.h"
+#include <util/xoroshiro32pp.h>
 
 #define KEY(key) SDL_SCANCODE_##key
 
@@ -27,19 +28,19 @@ const SDL_Scancode KEY_MAP[16] = {
 
 #define OP(op) void chip8_op_##op(chip8_t* c)
 
-#define X	(c->op.x)
-#define Y	(c->op.y)
-#define Vx	(c->v[X])
-#define Vy	(c->v[Y])
-#define Vf	(c->v[CARRY_REG])
-#define N	(c->op.n)
-#define NN	(c->op.nn)
-#define NNN (c->op.nnn)
-#define PC	(c->pc)
-#define I	(c->i)
+#define X	(c->cpu.op.x)
+#define Y	(c->cpu.op.y)
+#define Vx	(c->cpu.v[X])
+#define Vy	(c->cpu.v[Y])
+#define Vf	(c->cpu.v[CARRY_REG])
+#define N	(c->cpu.op.n)
+#define NN	(c->cpu.op.nn)
+#define NNN (c->cpu.op.nnn)
+#define PC	(c->cpu.pc)
+#define I	(c->cpu.i)
 
 void chip8_op_fetch(chip8_t* c) {
-	c->op.opcode = c->mem[PC] << 8 | c->mem[PC + 1];
+	c->cpu.op.opcode = c->mem[PC] << 8 | c->mem[PC + 1];
 }
 
 OP(00e0) {
@@ -47,14 +48,14 @@ OP(00e0) {
 	PC += 2;
 } /* CLS - Clear display */
 OP(00ee) {
-	PC = c->stack[--c->sp];
+	PC = c->stack[--c->cpu.sp];
 	PC += 2;
 } /* RET - Return from subroutine */
 
 OP(1nnn) { PC = NNN; } /* JP   nnn - Jump to nnn */
 OP(2nnn) {
-	c->stack[c->sp++] = c->pc;
-	PC				  = NNN;
+	c->stack[c->cpu.sp++] = c->cpu.pc;
+	PC					  = NNN;
 } /* CALL nnn - Call subroutine at nnn */
 
 OP(3xnn) { PC += Vx == NN ? 4 : 2; } /* SE  Vx, nn - Skip next opcode if Vx == nn */
@@ -122,7 +123,7 @@ OP(annn) {
 	I = NNN;
 	PC += 2;
 } /* LD I, nnn - I = nnn */
-OP(bnnn) { PC = NNN + c->v[0]; } /* JP nnn + V[0] - Jump to nnn + V[0] */
+OP(bnnn) { PC = NNN + c->cpu.v[0]; } /* JP nnn + V[0] - Jump to nnn + V[0] */
 
 OP(cxnn) {
 	const u8 rnd = xs32pp_next() % 8;
@@ -134,28 +135,22 @@ OP(cxnn) {
 OP(dxyn) {
 	Vf = 0;
 
-	u32* pixels = NULL;
-	int	 pitch;
-	SDL_LockTexture(c->screen.texture, NULL, (void**) &pixels, &pitch);
-
 	for (u8 y = 0; y < N; ++y) {
 		u8 pixel = c->mem[I + y];
 		for (u8 x = 0; x < 8; ++x) {
 			if (pixel & (0x80 >> x)) {
 				u32 pos = (Vx + x) % SCREEN_WIDTH +
 						  ((Vy + y) % SCREEN_HEIGHT) * SCREEN_WIDTH;
-				if (pixels[pos] == ON_COLOR) {
-					pixels[pos] = OFF_COLOR;
-					Vf			= 1;
+				if (c->screen.pixels[pos] == ON_COLOR) {
+					c->screen.pixels[pos] = OFF_COLOR;
+					Vf					  = 1;
 				} else {
-					pixels[pos] = ON_COLOR;
+					c->screen.pixels[pos] = ON_COLOR;
 				}
 				c->screen.draw = true;
 			}
 		}
 	}
-
-	SDL_UnlockTexture(c->screen.texture);
 
 	PC += 2;
 } /* DRW Vx, Vy, N - Display n-byte sprite starting at memory location I at Vx[y], set V[F] to 1 on collision */
@@ -200,10 +195,10 @@ OP(fx33) {
 	PC += 2;
 } /* BCD, Vx - Vx = BCD(Vx) */
 OP(fx55) {
-	memcpy(&c->mem[I], &c->v, X + 1);
+	memcpy(&c->mem[I], &c->cpu.v, X + 1);
 	PC += 2;
 } /* LD [I], Vx - Save V[0] - Vx to memory at I */
 OP(fx65) {
-	memcpy(&c->v, &c->mem[I], X + 1);
+	memcpy(&c->cpu.v, &c->mem[I], X + 1);
 	PC += 2;
 } /* LD Vx, [I] - Load from memory at I to V[0] - Vx */

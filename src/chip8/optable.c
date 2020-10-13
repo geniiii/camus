@@ -1,10 +1,8 @@
-#include "optable.h"
+#include <chip8/optable.h>
 
-#include "chip8.h"
-
-#define X	(c->op.n)
-#define XX	(c->op.nn)
-#define XXX (c->op.nnn)
+#define X	(c->cpu.op.n)
+#define XX	(c->cpu.op.nn)
+#define XXX (c->cpu.op.nnn)
 
 #define OP(op)	void chip8_op_##op(chip8_t* c)
 #define COP(op) chip8_op_##op(c)
