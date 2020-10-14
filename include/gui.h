@@ -12,7 +12,8 @@
 typedef enum camus_gui_open {
 	MENUBAR	  = PANEL(0),
 	REGISTERS = PANEL(1),
-	SPEED	  = PANEL(2)
+	SPEED	  = PANEL(2),
+	ABOUT	  = PANEL(3)
 } camus_gui_open_t;
 typedef u32 camus_gui_flags;
 

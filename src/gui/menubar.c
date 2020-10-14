@@ -39,10 +39,10 @@ bool camus_gui_menubar(camus_gui_t* g) {
 						chip8_screen_clear(g->s);
 					}
 				}
-
 				if (nk_menu_item_label(g->ctx, "Exit", NK_TEXT_LEFT)) {
 					g->c->running = false;
 				}
+				PANEL(ABOUT, "About")
 
 				nk_menu_end(g->ctx);
 			}
