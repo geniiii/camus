@@ -59,7 +59,6 @@ bool camus_gui_menubar(camus_gui_t* g) {
 				if (nk_menu_item_label(g->ctx, !g->c->cpu.halt ? "Pause" : "Unpause", NK_TEXT_LEFT)) {
 					g->c->cpu.halt = !g->c->cpu.halt;
 				}
-
 				if (nk_menu_item_label(g->ctx, "Restart", NK_TEXT_LEFT)) {
 					chip8_reset(g->c);
 					chip8_screen_clear(g->s);
