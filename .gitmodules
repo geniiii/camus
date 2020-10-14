@@ -1,3 +1,10 @@
 [submodule "cmake/sdl2"]
 	path = cmake/sdl2
 	url = https://github.com/aminosbh/sdl2-cmake-modules.git
+[submodule "external/nuklear"]
+	path = external/nuklear
+	url = https://github.com/Immediate-Mode-UI/Nuklear.git
+[submodule "external/nfd"]
+	path = external/nfd
+	url = https://github.com/geniiii/nativefiledialog.git
+	branch = cmake

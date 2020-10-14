@@ -13,3 +13,4 @@ AlignConsecutiveMacros: true
 AllowShortFunctionsOnASingleLine: true
 AllowShortCaseLabelsOnASingleLine: true
 SpaceAfterCStyleCast: true
+SortIncludes: false

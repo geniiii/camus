@@ -1,4 +1,4 @@
-#include "xoroshiro32pp.h"
+#include <util/xoroshiro32pp.h>
 
 static inline u16 rotl(const u16 x, u16 k) {
 	return (x << k) | (x >> ((sizeof x * 8) - k));

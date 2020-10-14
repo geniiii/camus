@@ -1,9 +1,9 @@
 #ifndef OPCODE_H
 #define OPCODE_H
 
-#include "types.h"
+#include <util/types.h>
 
-typedef union chip8_opcode_u {
+typedef union chip8_opcode {
 	u16 opcode;
 
 	struct {

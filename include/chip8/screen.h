@@ -2,9 +2,10 @@
 #define SCREEN_H
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
 #include <stdbool.h>
 
-#include "types.h"
+#include <util/types.h>
 
 #define ON_COLOR  0xFFFFFFFF
 #define OFF_COLOR 0xFF000000
@@ -13,10 +14,14 @@
 #define SCREEN_HEIGHT 32
 #define SCREEN_SIZE	  (SCREEN_WIDTH * SCREEN_HEIGHT)
 
-typedef struct chip8_screen_s {
-	SDL_Texture*  texture;
+typedef struct chip8_screen {
+	GLuint texture;
+	GLuint fbo;
+
 	SDL_Window*	  window;
-	SDL_Renderer* renderer;
+	SDL_GLContext gl_ctx;
+
+	u32 pixels[SCREEN_SIZE];
 
 	bool draw;
 } chip8_screen_t;

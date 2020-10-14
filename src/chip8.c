@@ -1,9 +1,8 @@
-#include "chip8.h"
+#include <chip8.h>
 
 #include <stdlib.h>
 
-#include "opcodes.h"
-#include "optable.h"
+#include <chip8/optable.h>
 
 #define OP(op) chip8_op_##op
 
@@ -27,14 +26,24 @@ const u8 FONTSET[FONTSET_SIZE] = {
 	0xF0, 0x80, 0xF0, 0x80, 0x80   // F
 };
 
-u8 chip8_init(chip8_t* c) {
-	memset(c, 0, sizeof(chip8_t));
-	c->pc = PROG_BEGIN;
+void chip8_init(chip8_t* c) {
+	camus_delta_init(&c->delta);
+
+	memset(c->mem, 0, sizeof c->mem);
+	chip8_reset(c);
 
 	/* Copy fontset */
 	memcpy(&c->mem[FONTSET_START], FONTSET, sizeof FONTSET);
+}
 
-	return chip8_screen_init(&c->screen);
+void chip8_reset(chip8_t* c) {
+	memset(&c->cpu, 0, sizeof c->cpu);
+	memset(c->stack, 0, sizeof c->stack);
+	c->sound   = 0;
+	c->delay   = 0;
+	c->running = true;
+
+	c->cpu.pc = PROG_BEGIN;
 }
 
 u8 chip8_load(chip8_t* c, const char* fname) {
@@ -63,6 +72,6 @@ void chip8_emulate_cycle(chip8_t* c) {
 		OP(cxnn), OP(dxyn), OP(exxx), OP(fxxx)};
 	chip8_op_fetch(c);
 
-	chip8_op_ptr op = op_ltable[c->op.op];
+	chip8_op_ptr op = op_ltable[c->cpu.op.op];
 	op(c);
 }
