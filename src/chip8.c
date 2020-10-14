@@ -1,8 +1,8 @@
-#include "chip8/chip8.h"
+#include <chip8.h>
 
 #include <stdlib.h>
 
-#include "chip8/optable.h"
+#include <chip8/optable.h>
 
 #define OP(op) chip8_op_##op
 
@@ -28,7 +28,9 @@ const u8 FONTSET[FONTSET_SIZE] = {
 
 u8 chip8_init(chip8_t* c) {
 	memset(c, 0, sizeof(chip8_t));
-	c->cpu.pc = PROG_BEGIN;
+
+	c->running = true;
+	c->cpu.pc  = PROG_BEGIN;
 
 	/* Copy fontset */
 	memcpy(&c->mem[FONTSET_START], FONTSET, sizeof FONTSET);

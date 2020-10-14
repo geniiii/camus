@@ -1,7 +1,7 @@
 #include <GL/glew.h>
 
+#include <chip8.h>
 #include <chip8/screen.h>
-#include <chip8/chip8.h>
 
 u8 chip8_screen_init(chip8_screen_t* s) {
 	SDL_SetHint(SDL_HINT_VIDEO_HIGHDPI_DISABLED, "0");

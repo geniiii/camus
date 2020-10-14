@@ -1,9 +1,9 @@
 #define SDL_MAIN_HANDLED
 #include <SDL2/SDL.h>
 
-#include "chip8/chip8.h"
-#include "gui.h"
-#include "nuklear/nuklear_sdl_opengl3.h"
+#include <chip8.h>
+#include <gui.h>
+#include <nuklear/nuklear_sdl_opengl3.h>
 
 #define TIMER_SPEED 60
 #define SPEED		(1000 / TIMER_SPEED)
@@ -28,8 +28,8 @@ int main(int argc, char** argv) {
 	u32		  accumulator = 0;
 	u32		  delta;
 	SDL_Event event;
-	bool	  running = true;
-	while (running) {
+
+	while (c.running) {
 		tick	  = SDL_GetTicks();
 		delta	  = tick - last_tick;
 		last_tick = tick;
@@ -37,6 +37,10 @@ int main(int argc, char** argv) {
 
 		while (accumulator >= SPEED) {
 			accumulator -= SPEED;
+
+			if (c.cpu.halt) {
+				continue;
+			}
 
 			/* 540Hz cycle loop */
 			for (u8 cycles = 1; cycles <= IPS_MULT; ++cycles) {
@@ -58,9 +62,16 @@ int main(int argc, char** argv) {
 		nk_input_begin(gui.ctx);
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
-				case SDL_QUIT: running = false; break;
+				case SDL_QUIT: c.running = false; break;
 				case SDL_KEYUP: {
 					if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
+						/* Draw the CHIP8 screen if the GUI is being closed and the delay timer is above 0
+						   If the delay timer is above 0, the CHIP8 screen won't be drawn until it gets down to 0 and a DXYN opcode is executed
+						   This results in the GUI still being on the screen, despite being closed */
+						if (gui.open && c.delay > 0) {
+							chip8_screen_draw(&c.screen);
+						}
+
 						gui.open = !gui.open;
 					}
 					break;

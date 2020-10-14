@@ -29,7 +29,7 @@ typedef struct chip8 {
 
 	u8 delay;
 
-	bool halt;
+	bool running;
 } chip8_t;
 
 extern u8 chip8_init(chip8_t* c);

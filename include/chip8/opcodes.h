@@ -1,7 +1,7 @@
 #ifndef OPCODES_H
 #define OPCODES_H
 
-#include <chip8/chip8.h>
+#include <chip8.h>
 
 typedef void (*chip8_op_ptr)(chip8_t*);
 
