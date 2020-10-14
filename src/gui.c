@@ -1,10 +1,12 @@
 #include <gui.h>
 
-#include <chip8/cpu.h>
 #include <SDL2/SDL_opengl.h>
 #include <nuklear/nuklear_sdl_opengl3.h>
+
+#include <chip8/cpu.h>
 #include <gui/menubar.h>
 #include <gui/registers.h>
+#include <gui/about.h>
 
 #define MAX_VERTEX_MEMORY  512 * 1024
 #define MAX_ELEMENT_MEMORY 128 * 1024
@@ -43,6 +45,7 @@ void camus_gui_init(camus_gui_t* g, chip8_t* c) {
 void camus_gui_update(camus_gui_t* g) {
 	UPDATE_PANEL(MENUBAR, camus_gui_menubar)
 	UPDATE_PANEL(REGISTERS, camus_gui_registers)
+	UPDATE_PANEL(ABOUT, camus_gui_about)
 }
 
 void camus_gui_draw(camus_gui_t* g) {

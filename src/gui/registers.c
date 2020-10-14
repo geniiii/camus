@@ -1,7 +1,9 @@
 #include <gui/registers.h>
 
+#define NAME "Registers"
+
 bool camus_gui_registers(camus_gui_t* g) {
-	if (nk_begin(g->ctx, "Registers", nk_rect(50, 50, 125, NUM_REGS * 21),
+	if (nk_begin(g->ctx, NAME, nk_rect(50, 50, 125, NUM_REGS * 21),
 				 NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_CLOSABLE | NK_WINDOW_SCALABLE | NK_WINDOW_MINIMIZABLE)) {
 		for (u8 i = 0; i < NUM_REGS; ++i) {
 			nk_layout_row_begin(g->ctx, NK_DYNAMIC, 14, 2);
@@ -21,5 +23,5 @@ bool camus_gui_registers(camus_gui_t* g) {
 	}
 	nk_end(g->ctx);
 
-	return !(nk_window_is_hidden(g->ctx, "Registers") || nk_window_is_closed(g->ctx, "Registers"));
+	return !(nk_window_is_hidden(g->ctx, NAME) || nk_window_is_closed(g->ctx, NAME));
 }
