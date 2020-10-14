@@ -26,9 +26,6 @@ const u8 FONTSET[FONTSET_SIZE] = {
 	0xF0, 0x80, 0xF0, 0x80, 0x80   // F
 };
 
-static void chip8_default(chip8_t* c) {
-}
-
 void chip8_init(chip8_t* c) {
 	memset(c->mem, 0, sizeof c->mem);
 	chip8_reset(c);
