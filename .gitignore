@@ -1,10 +1,5 @@
-*.3dsx
-*.elf
-*.smdh
 *.txt.user
 *.txt.user.*
-include/3dstris/version.hpp
-build/
+include/util/version.h
 .vscode/
-data/cia/3dstris.rsf
-data/romfs/gfx/*.*
+build/
