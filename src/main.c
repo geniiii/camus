@@ -13,7 +13,8 @@ int main(int argc, char** argv) {
 	u8 error = 0;
 
 	chip8_t c;
-	if ((error = chip8_init(&c)) > 0) {
+	chip8_init(&c);
+	if ((error = chip8_screen_init(&c.screen)) > 0) {
 		goto exit;
 	}
 	if ((error = chip8_load(&c, argv[1]) > 0)) {

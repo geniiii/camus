@@ -1,5 +1,5 @@
 *.txt.user
 *.txt.user.*
-include/util/version.h
 .vscode/
 build/
+include/util/config.h

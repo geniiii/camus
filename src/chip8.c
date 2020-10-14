@@ -26,7 +26,7 @@ const u8 FONTSET[FONTSET_SIZE] = {
 	0xF0, 0x80, 0xF0, 0x80, 0x80   // F
 };
 
-u8 chip8_init(chip8_t* c) {
+void chip8_init(chip8_t* c) {
 	memset(c, 0, sizeof(chip8_t));
 
 	c->running = true;
@@ -34,8 +34,6 @@ u8 chip8_init(chip8_t* c) {
 
 	/* Copy fontset */
 	memcpy(&c->mem[FONTSET_START], FONTSET, sizeof FONTSET);
-
-	return chip8_screen_init(&c->screen);
 }
 
 u8 chip8_load(chip8_t* c, const char* fname) {

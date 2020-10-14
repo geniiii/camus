@@ -21,6 +21,7 @@ bool camus_gui_menubar(camus_gui_t* g) {
 		nk_layout_row_begin(g->ctx, NK_DYNAMIC, 15, 3);
 		{
 			nk_layout_row_push(g->ctx, 0.1f);
+
 			if (nk_menu_begin_label(g->ctx, "File", NK_TEXT_LEFT, nk_vec2(120, 200))) {
 				nk_layout_row_dynamic(g->ctx, 20, 1);
 				if (nk_menu_item_label(g->ctx, "Load", NK_TEXT_LEFT)) {
@@ -32,14 +33,12 @@ bool camus_gui_menubar(camus_gui_t* g) {
 				nk_menu_end(g->ctx);
 			}
 
-			nk_layout_row_push(g->ctx, 0.1f);
 			if (nk_menu_begin_label(g->ctx, "Debug", NK_TEXT_LEFT, nk_vec2(120, 200))) {
 				nk_layout_row_dynamic(g->ctx, 20, 1);
 				PANEL(REGISTERS, "Registers")
 				nk_menu_end(g->ctx);
 			}
 
-			nk_layout_row_push(g->ctx, 0.1f);
 			if (nk_menu_begin_label(g->ctx, "Emulation", NK_TEXT_LEFT, nk_vec2(120, 200))) {
 				nk_layout_row_dynamic(g->ctx, 20, 1);
 				if (nk_menu_item_label(g->ctx, !g->c->cpu.halt ? "Pause" : "Unpause", NK_TEXT_LEFT)) {
