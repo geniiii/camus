@@ -4,7 +4,7 @@
 
 bool camus_gui_registers(camus_gui_t* g) {
 	/* NUM_REGS (16) + PC (1) + SP (1) */
-	if (nk_begin(g->ctx, NAME, nk_rect(50, 50, 125, (NUM_REGS + 1 + 1) * 21),
+	if (nk_begin(g->ctx, NAME, nk_rect(50, 20, 125, (NUM_REGS + 1 + 1) * 21),
 				 NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_CLOSABLE | NK_WINDOW_SCALABLE | NK_WINDOW_MINIMIZABLE)) {
 		/* PC */
 		nk_layout_row_begin(g->ctx, NK_DYNAMIC, 14, 2);
