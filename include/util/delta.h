@@ -4,10 +4,12 @@
 #include <util/types.h>
 
 typedef struct camus_delta {
-	u32 tick;
-	u32 last_tick;
-	u32 accumulator;
-	u32 delta;
+	double curr;
+	double last;
 } camus_delta_t;
+
+extern void camus_delta_init(camus_delta_t* d);
+
+extern double camus_delta_get(camus_delta_t* d);
 
 #endif

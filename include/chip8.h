@@ -4,6 +4,7 @@
 #include <chip8/opcode.h>
 #include <chip8/screen.h>
 #include <chip8/cpu.h>
+#include <util/delta.h>
 
 #define NUM_KEYS 16
 
@@ -19,6 +20,8 @@
 extern const u8 FONTSET[FONTSET_SIZE];
 
 typedef struct chip8 {
+	camus_delta_t delta;
+
 	chip8_cpu_t cpu;
 
 	u8	mem[MEM_SIZE];

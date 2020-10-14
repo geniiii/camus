@@ -24,20 +24,14 @@ int main(int argc, char** argv) {
 	camus_gui_t gui;
 	camus_gui_init(&gui, &c);
 
-	u32		  tick;
-	u32		  last_tick	  = 0;
-	u32		  accumulator = 0;
-	u32		  delta;
 	SDL_Event event;
 
+	double acc = 0;
 	while (c.running) {
-		tick	  = SDL_GetTicks();
-		delta	  = tick - last_tick;
-		last_tick = tick;
-		accumulator += delta;
+		acc += camus_delta_get(&c.delta);
 
-		while (accumulator >= SPEED) {
-			accumulator -= SPEED;
+		while (acc >= SPEED) {
+			acc -= SPEED;
 
 			if (c.cpu.halt) {
 				continue;

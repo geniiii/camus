@@ -27,6 +27,8 @@ const u8 FONTSET[FONTSET_SIZE] = {
 };
 
 void chip8_init(chip8_t* c) {
+	camus_delta_init(&c->delta);
+
 	memset(c->mem, 0, sizeof c->mem);
 	chip8_reset(c);
 
