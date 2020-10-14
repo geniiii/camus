@@ -15,7 +15,7 @@ file(GLOB_RECURSE HEADER_LIST CONFIGURE_DEPENDS ${camus_SOURCE_DIR}/include/*.h)
 add_executable(camus ${SOURCE_LIST} ${HEADER_LIST})
 target_include_directories(camus PUBLIC ../include)
 
-target_link_libraries(camus PRIVATE sdl2 nuklear::nuklear OpenGL::GL OpenGL::GLU GLEW::glew_s)
+target_link_libraries(camus PRIVATE sdl2 nuklear::nuklear OpenGL::GL OpenGL::GLU GLEW::glew_s nfd::nfd)
 
 source_group(TREE ${camus_SOURCE_DIR}/include
 			 PREFIX "Header Files"

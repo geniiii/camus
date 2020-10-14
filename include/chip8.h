@@ -33,7 +33,9 @@ typedef struct chip8 {
 } chip8_t;
 
 extern void chip8_init(chip8_t* c);
-extern u8	chip8_load(chip8_t* c, const char* filename);
+extern void chip8_reset(chip8_t* c);
+
+extern u8 chip8_load(chip8_t* c, const char* filename);
 
 extern void chip8_emulate_cycle(chip8_t* c);
 

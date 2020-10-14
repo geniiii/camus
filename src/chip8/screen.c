@@ -85,7 +85,7 @@ u8 chip8_screen_draw(chip8_screen_t* s) {
 }
 
 void chip8_screen_clear(chip8_screen_t* s) {
-	glClearColor(0, 0, 0, 1);
+	memset(s->pixels, 0, sizeof s->pixels);
 
 	s->draw = true;
 }

@@ -15,9 +15,6 @@ typedef struct chip8_cpu {
 
 	u8 v[NUM_REGS];
 
-	u8 sound;
-	u8 delay;
-
 	bool halt;
 } chip8_cpu_t;
 

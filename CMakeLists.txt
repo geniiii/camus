@@ -28,4 +28,6 @@ find_package(SDL2 REQUIRED)
 find_package(nuklear REQUIRED)
 find_package(OpenGL REQUIRED)
 
+add_subdirectory(external/nfd)
+
 add_subdirectory(src)

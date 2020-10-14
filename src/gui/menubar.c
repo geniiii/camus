@@ -1,5 +1,7 @@
 #include <gui/menubar.h>
 
+#include <nfd.h>
+
 #define PANEL(_enum, name)                                \
 	if (nk_menu_item_label(g->ctx, name, NK_TEXT_LEFT)) { \
 		if (g->panels & _enum) {                          \
@@ -24,12 +26,24 @@ bool camus_gui_menubar(camus_gui_t* g) {
 
 			if (nk_menu_begin_label(g->ctx, "File", NK_TEXT_LEFT, nk_vec2(120, 200))) {
 				nk_layout_row_dynamic(g->ctx, 20, 1);
+
 				if (nk_menu_item_label(g->ctx, "Load", NK_TEXT_LEFT)) {
-					/* TODO: Add functionality */
+					nfdchar_t*	outPath = NULL;
+					nfdresult_t result	= NFD_OpenDialog(NULL, NULL, &outPath);
+					if (result == NFD_OKAY) {
+						chip8_init(g->c);
+
+						chip8_load(g->c, outPath);
+						free(outPath);
+
+						chip8_screen_clear(g->s);
+					}
 				}
+
 				if (nk_menu_item_label(g->ctx, "Exit", NK_TEXT_LEFT)) {
 					g->c->running = false;
 				}
+
 				nk_menu_end(g->ctx);
 			}
 
@@ -41,9 +55,16 @@ bool camus_gui_menubar(camus_gui_t* g) {
 
 			if (nk_menu_begin_label(g->ctx, "Emulation", NK_TEXT_LEFT, nk_vec2(120, 200))) {
 				nk_layout_row_dynamic(g->ctx, 20, 1);
+
 				if (nk_menu_item_label(g->ctx, !g->c->cpu.halt ? "Pause" : "Unpause", NK_TEXT_LEFT)) {
 					g->c->cpu.halt = !g->c->cpu.halt;
 				}
+
+				if (nk_menu_item_label(g->ctx, "Restart", NK_TEXT_LEFT)) {
+					chip8_reset(g->c);
+					chip8_screen_clear(g->s);
+				}
+
 				nk_menu_end(g->ctx);
 			}
 		}
