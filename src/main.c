@@ -17,8 +17,12 @@ int main(int argc, char** argv) {
 	if ((error = chip8_screen_init(&c.screen)) > 0) {
 		goto exit;
 	}
-	if ((error = chip8_load(&c, argv[1]) > 0)) {
-		goto exit;
+	if (argc > 1) {
+		if ((error = chip8_load(&c, argv[1]) > 0)) {
+			goto exit;
+		}
+	} else {
+		c.cpu.halt = true;
 	}
 
 	camus_gui_t gui;

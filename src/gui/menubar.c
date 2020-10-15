@@ -67,9 +67,9 @@ bool camus_gui_menubar(camus_gui_t* g) {
 				nk_menu_end(g->ctx);
 			}
 		}
-		nk_layout_row_end(g->ctx);
 		nk_menubar_end(g->ctx);
 	}
+	nk_layout_row_end(g->ctx);
 	nk_end(g->ctx);
 
 	return 1;
