@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12...3.17)
+cmake_minimum_required(VERSION 3.12...3.19)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
