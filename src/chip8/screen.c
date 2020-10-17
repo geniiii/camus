@@ -5,6 +5,8 @@
 #include <util/config.h>
 
 u8 chip8_screen_init(chip8_screen_t* s) {
+	chip8_screen_clear(s);
+
 	SDL_SetHint(SDL_HINT_VIDEO_HIGHDPI_DISABLED, "0");
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -34,18 +36,14 @@ u8 chip8_screen_init(chip8_screen_t* s) {
 	}
 	glewInit();
 
-	for (u16 i = 0; i < SCREEN_SIZE; ++i) {
-		s->pixels[i] = OFF_COLOR;
-	}
-
 	glGenTextures(1, &s->texture);
 
 	u32 win_width, win_height;
 	SDL_GetWindowSize(s->window, &win_width, &win_height);
-
 	glViewport(0, 0, win_width, win_height);
+
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT);
 
 	glBindTexture(GL_TEXTURE_2D, s->texture);
 	glTexImage2D(
@@ -86,7 +84,9 @@ u8 chip8_screen_draw(chip8_screen_t* s) {
 }
 
 void chip8_screen_clear(chip8_screen_t* s) {
-	memset(s->pixels, 0, sizeof s->pixels);
+	for (u16 i = 0; i < SCREEN_SIZE; ++i) {
+		s->pixels[i] = OFF_COLOR;
+	}
 
 	s->draw = true;
 }
