@@ -26,7 +26,7 @@ bool camus_gui_registers(camus_gui_t* g) {
 			nk_label(g->ctx, "SP:", NK_TEXT_LEFT);
 
 			nk_layout_row_push(g->ctx, 0.75f);
-			char sp[2 + 1];
+			char sp[4 + 1];
 			sprintf(sp, "0x%X", g->c->cpu.sp);
 			nk_label(g->ctx, sp, NK_TEXT_RIGHT);
 		}
@@ -42,7 +42,7 @@ bool camus_gui_registers(camus_gui_t* g) {
 				nk_label(g->ctx, reg, NK_TEXT_LEFT);
 
 				nk_layout_row_push(g->ctx, 0.75f);
-				char v[2 + 1];
+				char v[4 + 1];
 				sprintf(v, "0x%X", g->c->cpu.v[i]);
 				nk_label(g->ctx, v, NK_TEXT_RIGHT);
 			}
