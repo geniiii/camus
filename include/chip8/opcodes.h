@@ -23,8 +23,8 @@ OP(00ee) /* RET - Return from subroutine */
 OP(1nnn) /* JP   nnn - Jump to nnn */
 OP(2nnn) /* CALL nnn - Call subroutine at nnn */
 
-OP(3xnn) /* SE  Vx, nn   - Skip next opcode if Vx == nn */
-OP(4xnn) /* SNE Vx, nn   - Skip next opcode if Vx != nn */
+OP(3xnn) /* SE  Vx, nn - Skip next opcode if Vx == nn */
+OP(4xnn) /* SNE Vx, nn - Skip next opcode if Vx != nn */
 OP(5xy0) /* SE  Vx, Vy - Skip next opcode if Vx == Vy */
 OP(9xy0) /* SNE Vx, Vy - Skip next opcode if Vx != Vy */
 
