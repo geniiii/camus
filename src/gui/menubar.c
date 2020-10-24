@@ -50,6 +50,7 @@ bool camus_gui_menubar(struct camus_gui* restrict g) {
 			if (nk_menu_begin_label(g->ctx, "Debug", NK_TEXT_LEFT, nk_vec2(120, 200))) {
 				nk_layout_row_dynamic(g->ctx, 20, 1);
 				PANEL(REGISTERS, "Registers")
+				PANEL(MEMORY, "Memory")
 				nk_menu_end(g->ctx);
 			}
 

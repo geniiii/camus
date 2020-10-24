@@ -7,6 +7,7 @@
 #include <gui/menubar.h>
 #include <gui/registers.h>
 #include <gui/about.h>
+#include <gui/memory.h>
 
 #define MAX_VERTEX_MEMORY  512 * 1024
 #define MAX_ELEMENT_MEMORY 128 * 1024
@@ -46,6 +47,7 @@ void camus_gui_update(struct camus_gui* restrict g) {
 	UPDATE_PANEL(MENUBAR, camus_gui_menubar)
 	UPDATE_PANEL(REGISTERS, camus_gui_registers)
 	UPDATE_PANEL(ABOUT, camus_gui_about)
+	UPDATE_PANEL(MEMORY, camus_gui_memory)
 }
 
 void camus_gui_draw(struct camus_gui* restrict g) {
