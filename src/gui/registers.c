@@ -2,7 +2,7 @@
 
 #define NAME "Registers"
 
-bool camus_gui_registers(camus_gui_t* g) {
+bool camus_gui_registers(struct camus_gui* restrict g) {
 	/* NUM_REGS (16) + PC (1) + SP (1) */
 	if (nk_begin(g->ctx, NAME, nk_rect(50, 20, 125, (NUM_REGS + 1 + 1) * 16.75f),
 				 NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_CLOSABLE | NK_WINDOW_SCALABLE | NK_WINDOW_MINIMIZABLE)) {

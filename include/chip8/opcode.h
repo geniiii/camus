@@ -3,7 +3,7 @@
 
 #include <util/types.h>
 
-typedef union chip8_opcode {
+union chip8_opcode {
 	u16 opcode;
 
 	struct {
@@ -20,6 +20,6 @@ typedef union chip8_opcode {
 	struct {
 		u16 nnn : 12;
 	};
-} chip8_opcode_t;
+};
 
 #endif

@@ -26,7 +26,7 @@ const u8 FONTSET[FONTSET_SIZE] = {
 	0xF0, 0x80, 0xF0, 0x80, 0x80   // F
 };
 
-void chip8_init(chip8_t* c) {
+void chip8_init(struct chip8* restrict c) {
 	camus_delta_init(&c->delta);
 
 	memset(c->mem, 0, sizeof c->mem);
@@ -36,17 +36,18 @@ void chip8_init(chip8_t* c) {
 	memcpy(&c->mem[FONTSET_START], FONTSET, sizeof FONTSET);
 }
 
-void chip8_reset(chip8_t* c) {
-	memset(&c->cpu, 0, sizeof c->cpu);
-	memset(c->stack, 0, sizeof c->stack);
-	c->sound   = 0;
-	c->delay   = 0;
-	c->running = true;
-
+void chip8_reset(struct chip8* restrict c) {
 	c->cpu.pc = PROG_BEGIN;
+
+	memset(c->stack, 0, sizeof c->stack);
+
+	c->sound = 0;
+	c->delay = 0;
+
+	c->running = true;
 }
 
-u8 chip8_load(chip8_t* c, const char* fname) {
+u8 chip8_load(struct chip8* restrict c, const char* restrict fname) {
 	FILE* fp = fopen(fname, "rb");
 	if (!fp) {
 		fputs("Failed to open file", stderr);
@@ -64,7 +65,7 @@ u8 chip8_load(chip8_t* c, const char* fname) {
 	fclose(fp);
 }
 
-void chip8_emulate_cycle(chip8_t* c) {
+void chip8_emulate_cycle(struct chip8* restrict c) {
 	static const chip8_op_ptr op_ltable[16] = {
 		OP(0xxx), OP(1nnn), OP(2nnn), OP(3xnn),
 		OP(4xnn), OP(5xy0), OP(6xnn), OP(7xnn),

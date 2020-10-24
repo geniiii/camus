@@ -4,7 +4,7 @@
 #define XX	(c->cpu.op.nn)
 #define XXX (c->cpu.op.nnn)
 
-#define OP(op)	void chip8_op_##op(chip8_t* c)
+#define OP(op)	void chip8_op_##op(struct chip8* restrict c)
 #define COP(op) chip8_op_##op(c)
 
 OP(0xxx) {

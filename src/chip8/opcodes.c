@@ -26,7 +26,7 @@ const SDL_Scancode KEY_MAP[16] = {
 	KEY(V)	/* F */
 };
 
-#define OP(op) void chip8_op_##op(chip8_t* c)
+#define OP(op) void chip8_op_##op(struct chip8* restrict c)
 
 #define X	(c->cpu.op.x)
 #define Y	(c->cpu.op.y)
@@ -39,7 +39,7 @@ const SDL_Scancode KEY_MAP[16] = {
 #define PC	(c->cpu.pc)
 #define I	(c->cpu.i)
 
-void chip8_op_fetch(chip8_t* c) {
+void chip8_op_fetch(struct chip8* restrict c) {
 	c->cpu.op.opcode = c->mem[PC] << 8 | c->mem[PC + 1];
 }
 

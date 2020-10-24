@@ -12,7 +12,7 @@
 int main(int argc, char** argv) {
 	u8 error = 0;
 
-	chip8_t c;
+	struct chip8 c;
 	chip8_init(&c);
 	if ((error = chip8_screen_init(&c.screen)) > 0) {
 		goto exit;
@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
 		c.cpu.halt = true;
 	}
 
-	camus_gui_t gui;
+	struct camus_gui gui;
 	camus_gui_init(&gui, &c);
 
 	SDL_Event event;

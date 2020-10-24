@@ -19,27 +19,26 @@
 
 extern const u8 FONTSET[FONTSET_SIZE];
 
-typedef struct chip8 {
-	camus_delta_t delta;
-
-	chip8_cpu_t cpu;
+struct chip8 {
+	struct camus_delta delta;
+	struct chip8_cpu   cpu;
 
 	u8	mem[MEM_SIZE];
 	u16 stack[STACK_SIZE];
 
-	chip8_screen_t screen;
-	u8			   sound;
+	struct chip8_screen screen;
 
+	u8 sound;
 	u8 delay;
 
 	bool running;
-} chip8_t;
+};
 
-extern void chip8_init(chip8_t* c);
-extern void chip8_reset(chip8_t* c);
+extern void chip8_init(struct chip8* restrict c);
+extern void chip8_reset(struct chip8* restrict c);
 
-extern u8 chip8_load(chip8_t* c, const char* filename);
+extern u8 chip8_load(struct chip8* restrict c, const char* restrict filename);
 
-extern void chip8_emulate_cycle(chip8_t* c);
+extern void chip8_emulate_cycle(struct chip8* restrict c);
 
 #endif

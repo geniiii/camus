@@ -3,9 +3,9 @@
 
 #include <chip8.h>
 
-typedef void (*chip8_op_ptr)(chip8_t*);
+typedef void (*chip8_op_ptr)(struct chip8* restrict);
 
-#define OP(op) extern void chip8_op_##op(chip8_t* c);
+#define OP(op) extern void chip8_op_##op(struct chip8* restrict c);
 
 /*
  nnn or addr - A 12-bit value, the lowest 12 bits of the opcode
@@ -15,7 +15,7 @@ typedef void (*chip8_op_ptr)(chip8_t*);
  nn - An 8-bit value, the lowest 8 bits of the opcode
 */
 
-extern void chip8_op_fetch(chip8_t* c);
+extern void chip8_op_fetch(struct chip8* restrict c);
 
 OP(00e0) /* CLS - Clear display */
 OP(00ee) /* RET - Return from subroutine */

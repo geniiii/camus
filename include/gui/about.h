@@ -3,6 +3,6 @@
 
 #include <gui.h>
 
-extern bool camus_gui_about(camus_gui_t* g);
+extern bool camus_gui_about(struct camus_gui* restrict g);
 
 #endif

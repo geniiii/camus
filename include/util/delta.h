@@ -3,13 +3,13 @@
 
 #include <util/types.h>
 
-typedef struct camus_delta {
+struct camus_delta {
 	double curr;
 	double last;
-} camus_delta_t;
+};
 
-extern void camus_delta_init(camus_delta_t* d);
+extern void camus_delta_init(struct camus_delta* restrict d);
 
-extern double camus_delta_get(camus_delta_t* d);
+extern double camus_delta_get(struct camus_delta* restrict d);
 
 #endif

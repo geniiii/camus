@@ -4,7 +4,7 @@
 #include <chip8/screen.h>
 #include <util/config.h>
 
-u8 chip8_screen_init(chip8_screen_t* s) {
+u8 chip8_screen_init(struct chip8_screen* restrict s) {
 	chip8_screen_clear(s);
 
 	SDL_SetHint(SDL_HINT_VIDEO_HIGHDPI_DISABLED, "0");
@@ -62,7 +62,7 @@ u8 chip8_screen_init(chip8_screen_t* s) {
 	return 0;
 }
 
-u8 chip8_screen_draw(chip8_screen_t* s) {
+u8 chip8_screen_draw(struct chip8_screen* restrict s) {
 	glBindTexture(GL_TEXTURE_2D, s->texture);
 	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, s->pixels);
 
@@ -83,7 +83,7 @@ u8 chip8_screen_draw(chip8_screen_t* s) {
 	return 0;
 }
 
-void chip8_screen_clear(chip8_screen_t* s) {
+void chip8_screen_clear(struct chip8_screen* restrict s) {
 	for (u16 i = 0; i < SCREEN_SIZE; ++i) {
 		s->pixels[i] = OFF_COLOR;
 	}
@@ -91,7 +91,7 @@ void chip8_screen_clear(chip8_screen_t* s) {
 	s->draw = true;
 }
 
-void chip8_screen_destroy(chip8_screen_t* s) {
+void chip8_screen_destroy(struct chip8_screen* restrict s) {
 	glDeleteFramebuffers(1, &s->fbo);
 	s->fbo = 0;
 	glDeleteTextures(1, &s->texture);

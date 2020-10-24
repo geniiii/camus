@@ -13,7 +13,7 @@
 
 #define NAME "Menubar"
 
-bool camus_gui_menubar(camus_gui_t* g) {
+bool camus_gui_menubar(struct camus_gui* restrict g) {
 	u32 win_width;
 	SDL_GetWindowSize(g->s->window, &win_width, NULL);
 	if (nk_begin(g->ctx, NAME, nk_rect(0, 0, win_width, 20),

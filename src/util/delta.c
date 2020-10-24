@@ -2,12 +2,12 @@
 
 #include <SDL2/SDL.h>
 
-void camus_delta_init(camus_delta_t* d) {
+void camus_delta_init(struct camus_delta* restrict d) {
 	d->curr = SDL_GetPerformanceCounter();
 	d->last = 0;
 }
 
-double camus_delta_get(camus_delta_t* d) {
+double camus_delta_get(struct camus_delta* restrict d) {
 	d->last = d->curr;
 	d->curr = SDL_GetPerformanceCounter();
 

@@ -18,7 +18,7 @@
 		}                             \
 	}
 
-void camus_gui_init(camus_gui_t* g, chip8_t* c) {
+void camus_gui_init(struct camus_gui* restrict g, struct chip8* restrict c) {
 	g->c = c;
 	g->s = &c->screen;
 
@@ -42,21 +42,16 @@ void camus_gui_init(camus_gui_t* g, chip8_t* c) {
 	g->ctx->style.contextual_button.rounding = 0;
 }
 
-void camus_gui_update(camus_gui_t* g) {
+void camus_gui_update(struct camus_gui* restrict g) {
 	UPDATE_PANEL(MENUBAR, camus_gui_menubar)
 	UPDATE_PANEL(REGISTERS, camus_gui_registers)
 	UPDATE_PANEL(ABOUT, camus_gui_about)
 }
 
-void camus_gui_draw(camus_gui_t* g) {
-	u32 win_width, win_height;
-
-	SDL_GetWindowSize(g->s->window, &win_width, &win_height);
-	glViewport(0, 0, win_width, win_height);
-
+void camus_gui_draw(struct camus_gui* restrict g) {
 	nk_sdl_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_MEMORY, MAX_ELEMENT_MEMORY);
 }
 
-void camus_gui_destroy(camus_gui_t* g) {
+void camus_gui_destroy(struct camus_gui* restrict g) {
 	nk_sdl_shutdown();
 }
