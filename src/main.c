@@ -50,10 +50,10 @@ int main(int argc, char** argv) {
 				}
 			}
 
-			if (c.delay) {
+			if (c.delay > 0) {
 				c.delay--;
 			}
-			if (c.sound) {
+			if (c.sound > 0) {
 				c.sound--;
 			}
 		}
