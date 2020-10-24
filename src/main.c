@@ -5,10 +5,6 @@
 #include <gui.h>
 #include <nuklear/nuklear_sdl_opengl3.h>
 
-#define TIMER_SPEED 60
-#define SPEED		(1000 / TIMER_SPEED)
-#define IPS_MULT	9
-
 int main(int argc, char** argv) {
 	u8 error = 0;
 
@@ -34,15 +30,15 @@ int main(int argc, char** argv) {
 	while (c.running) {
 		acc += camus_delta_get(&c.delta);
 
-		while (acc >= SPEED) {
-			acc -= SPEED;
+		while (acc >= c.cpu.speed.timer_speed) {
+			acc -= c.cpu.speed.timer_speed;
 
 			if (c.cpu.halt) {
 				continue;
 			}
 
-			/* 540Hz cycle loop */
-			for (u8 cycles = 1; cycles <= IPS_MULT; ++cycles) {
+			/* Opcode loop, by default 540Hz (9 instructions per each 60Hz timer update) */
+			for (u8 cycles = 0; cycles < c.cpu.speed.ips_mult; ++cycles) {
 				chip8_emulate_cycle(&c);
 				if (c.screen.draw) {
 					chip8_screen_draw(&c.screen);

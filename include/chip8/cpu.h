@@ -10,6 +10,11 @@
 #define CARRY_REG 0xF
 
 struct chip8_cpu {
+	struct {
+		double timer_speed;
+		u8	   ips_mult;
+	} speed;
+
 	u16				   i;
 	u16				   pc;
 	union chip8_opcode op;
@@ -19,5 +24,8 @@ struct chip8_cpu {
 
 	bool halt;
 };
+
+extern void chip8_cpu_init(struct chip8_cpu* restrict cpu);
+extern void chip8_cpu_reset(struct chip8_cpu* restrict cpu);
 
 #endif

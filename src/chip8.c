@@ -27,6 +27,7 @@ const u8 FONTSET[FONTSET_SIZE] = {
 };
 
 void chip8_init(struct chip8* restrict c) {
+	chip8_cpu_init(&c->cpu);
 	camus_delta_init(&c->delta);
 
 	memset(c->mem, 0, sizeof c->mem);
@@ -37,6 +38,7 @@ void chip8_init(struct chip8* restrict c) {
 }
 
 void chip8_reset(struct chip8* restrict c) {
+	chip8_cpu_reset(&c->cpu);
 	c->cpu.pc = PROG_BEGIN;
 
 	memset(c->stack, 0, sizeof c->stack);
