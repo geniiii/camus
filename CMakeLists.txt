@@ -4,8 +4,8 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 set(camus_VERSION_MAJOR 0)
-set(camus_VERSION_MINOR 1)
-set(camus_VERSION_PATCH 2)
+set(camus_VERSION_MINOR 2)
+set(camus_VERSION_PATCH 0)
 set(camus_VERSION ${camus_VERSION_MAJOR}.${camus_VERSION_MINOR}.${camus_VERSION_PATCH})
 
 project(camus
