@@ -12,6 +12,12 @@ void chip8_cpu_init(struct chip8_cpu* restrict cpu) {
 }
 
 void chip8_cpu_reset(struct chip8_cpu* restrict cpu) {
-	/* Set everything besides speed to 0 */
-	memset(cpu + sizeof cpu->speed, 0, sizeof(struct chip8_cpu) - sizeof cpu->speed);
+	cpu->i	   = 0;
+	cpu->pc	   = 0;
+	cpu->op.op = 0;
+	cpu->sp	   = 0;
+
+	memset(&cpu->v, 0, sizeof cpu->v);
+
+	cpu->halt = false;
 }
