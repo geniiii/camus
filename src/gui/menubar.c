@@ -28,13 +28,13 @@ bool camus_gui_menubar(struct camus_gui* restrict g) {
 				nk_layout_row_dynamic(g->ctx, 20, 1);
 
 				if (nk_menu_item_label(g->ctx, "Load", NK_TEXT_LEFT)) {
-					nfdchar_t*	outPath = NULL;
-					nfdresult_t result	= NFD_OpenDialog(NULL, NULL, &outPath);
+					nfdchar_t*	out_path = NULL;
+					nfdresult_t result	 = NFD_OpenDialog(NULL, NULL, &out_path);
 					if (result == NFD_OKAY) {
-						chip8_init(g->c);
+						chip8_reset(g->c);
 
-						chip8_load(g->c, outPath);
-						free(outPath);
+						chip8_load(g->c, out_path);
+						free(out_path);
 
 						chip8_screen_clear(g->s);
 					}
