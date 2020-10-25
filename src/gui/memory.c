@@ -1,4 +1,5 @@
 #include <gui/memory.h>
+#include <util/hex.h>
 
 #define NAME "Memory"
 
@@ -14,7 +15,7 @@ bool camus_gui_memory(struct camus_gui* restrict g) {
 
 			for (u8 i = 0; i <= 0xF; i += 2) {
 				char hex[2 + 1];
-				sprintf(hex, "%02X", i);
+				u16_to_hex(i, hex, 2);
 
 				nk_layout_row_push(g->ctx, 30);
 				nk_label(g->ctx, hex, NK_TEXT_ALIGN_LEFT);
@@ -31,14 +32,13 @@ bool camus_gui_memory(struct camus_gui* restrict g) {
 
 					if ((i - 1) % 0x10 == 0) {
 						nk_layout_row_push(g->ctx, 35);
-						sprintf(hex, "%04X", i - 1);
+						u16_to_hex(i - 1, hex, 4);
 
 						nk_label(g->ctx, hex, NK_TEXT_ALIGN_LEFT);
 					}
 
+					u16_to_hex(g->c->mem[i - 1] << 8 | g->c->mem[i], hex, 4);
 					nk_layout_row_push(g->ctx, 30);
-					sprintf(hex, "%04X", g->c->mem[i - 1] << 8 | g->c->mem[i]);
-
 					nk_label(g->ctx, hex, NK_TEXT_ALIGN_LEFT);
 				}
 			}
