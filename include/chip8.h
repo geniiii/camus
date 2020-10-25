@@ -17,8 +17,6 @@
 /* 5 bytes * 16 chars */
 #define FONTSET_SIZE 5 * 16
 
-extern const u8 FONTSET[FONTSET_SIZE];
-
 struct chip8 {
 	struct camus_delta delta;
 	struct chip8_cpu   cpu;
