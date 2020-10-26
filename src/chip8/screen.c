@@ -34,7 +34,10 @@ u8 chip8_screen_init(struct chip8_screen* restrict s) {
 		fputs("Failed to create OpenGL context", stderr);
 		return 1;
 	}
-	glewInit();
+	if (glewInit() != GLEW_OK) {
+		fputs("Failed to initialize GLEW", stderr);
+		return 1;
+	}
 
 	glGenTextures(1, &s->texture);
 
