@@ -14,7 +14,7 @@
 #define SCREEN_HEIGHT 32
 #define SCREEN_SIZE	  (SCREEN_WIDTH * SCREEN_HEIGHT)
 
-typedef struct chip8_screen {
+struct chip8_screen {
 	GLuint texture;
 	GLuint fbo;
 
@@ -22,15 +22,13 @@ typedef struct chip8_screen {
 	SDL_GLContext gl_ctx;
 
 	u32 pixels[SCREEN_SIZE];
+};
 
-	bool draw;
-} chip8_screen_t;
+extern u8 chip8_screen_init(struct chip8_screen* s);
 
-extern u8 chip8_screen_init(chip8_screen_t* s);
+extern u8	chip8_screen_draw(struct chip8_screen* s);
+extern void chip8_screen_clear(struct chip8_screen* s);
 
-extern u8	chip8_screen_draw(chip8_screen_t* s);
-extern void chip8_screen_clear(chip8_screen_t* s);
-
-extern void chip8_screen_destroy(chip8_screen_t* s);
+extern void chip8_screen_destroy(struct chip8_screen* s);
 
 #endif

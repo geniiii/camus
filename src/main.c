@@ -40,10 +40,6 @@ int main(int argc, char** argv) {
 			/* Opcode loop, by default 540Hz (9 instructions per each 60Hz timer update) */
 			for (u8 cycles = 0; cycles < c.cpu.speed.ips_mult; ++cycles) {
 				chip8_emulate_cycle(&c);
-				if (c.screen.draw) {
-					chip8_screen_draw(&c.screen);
-					c.screen.draw = false;
-				}
 			}
 
 			if (c.delay > 0) {
@@ -72,11 +68,7 @@ int main(int argc, char** argv) {
 		}
 		nk_input_end(gui.ctx);
 
-		/* Draw the CHIP8 screen if it hasn't already been drawn to avoid GUI ghosting */
-		if (c.delay > 0 || c.cpu.halt || (!gui.open && !c.screen.draw)) {
-			chip8_screen_draw(&c.screen);
-		}
-
+		chip8_screen_draw(&c.screen);
 		if (gui.open) {
 			camus_gui_update(&gui);
 			camus_gui_draw(&gui);

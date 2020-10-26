@@ -147,7 +147,6 @@ OP(dxyn) {
 				} else {
 					c->screen.pixels[pos] = ON_COLOR;
 				}
-				c->screen.draw = true;
 			}
 		}
 	}

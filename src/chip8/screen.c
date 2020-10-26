@@ -90,8 +90,6 @@ void chip8_screen_clear(struct chip8_screen* restrict s) {
 	for (u16 i = 0; i < SCREEN_SIZE; ++i) {
 		s->pixels[i] = OFF_COLOR;
 	}
-
-	s->draw = true;
 }
 
 void chip8_screen_destroy(struct chip8_screen* restrict s) {
