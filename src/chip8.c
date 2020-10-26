@@ -65,6 +65,8 @@ u8 chip8_load(struct chip8* restrict c, const char* restrict fname) {
 
 	fread(&c->mem[PROG_BEGIN], fsize, sizeof(u8), fp);
 	fclose(fp);
+
+	return 0;
 }
 
 void chip8_emulate_cycle(struct chip8* restrict c) {
