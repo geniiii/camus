@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
 	struct camus_gui gui;
 	camus_gui_init(&gui, &c);
 
-    SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
+	SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
 	SDL_Event event;
 
 	double acc = 0;
